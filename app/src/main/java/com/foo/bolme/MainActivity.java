@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         messages = new ArrayList<>();  // 이 부분에서 초기화
         messageAdapter = new MessageAdapter(messages, this);
         recyclerView.setAdapter(messageAdapter);
-        LinearLayout menu = findViewById(R.id.menu);
         getContactData();
         // SMS 읽어오기
         readSMS();
@@ -106,19 +105,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mainBinding.menuBar.setOnClickListener(v -> {
-            if(mainBinding.menu.getVisibility()== View.INVISIBLE){
-                mainBinding.menu.setVisibility(View.VISIBLE);
-            }
-
-        });
-
-        mainBinding.menuBakcbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainBinding.menu.setVisibility(View.INVISIBLE);
-            }
-        });
 
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             private float startY = 0;
@@ -412,14 +398,6 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "메시지를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
-        }
-    }
-    @Override
-    public void onBackPressed() {
-        if (mainBinding.menu.getVisibility() == View.VISIBLE) {
-            mainBinding.menu.setVisibility(View.INVISIBLE);
-        } else {
-            super.onBackPressed();
         }
     }
 }
