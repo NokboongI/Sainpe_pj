@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <Button
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/circle"
         android:layout_width="60dp"
         android:layout_height="60dp"
