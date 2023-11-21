@@ -21,6 +21,12 @@
         android:theme="@style/Theme.Bolme"
         tools:targetApi="31">
         <activity
+            android:name=".Setting"
+            android:exported="true" />
+        <activity
+            android:name=".Spam"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -29,11 +35,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".get_phonenum"
-            android:exported="true"/>
+        <activity
+            android:name=".get_phonenum"
+            android:exported="true" />
         <activity
             android:name=".ChatActivity"
-            android:exported="true"/>
+            android:exported="true" />
+
         <receiver
             android:name=".SmsReceiver"
             android:enabled="true"
@@ -42,9 +50,6 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
     </application>
-
-
 
 </manifest>

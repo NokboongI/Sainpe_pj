@@ -9,11 +9,10 @@
         android:id="@+id/circle"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:background="@drawable/baseline_brightness_1_24"
-        android:backgroundTint="@color/basiccolor"
-        android:layout_gravity="center"
-        />
+        android:backgroundTint="@color/basiccolor" />
 
     <TextView
         android:id="@+id/category_name"
@@ -22,6 +21,7 @@
         android:layout_gravity="center"
         android:layout_below="@id/circle"
         android:layout_marginLeft="20dp"
+        android:textColor="@color/black"
         android:text="카테고리 명" />
 
 </RelativeLayout>

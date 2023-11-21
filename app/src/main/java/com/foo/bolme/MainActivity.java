@@ -2,6 +2,7 @@ package com.foo.bolme;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,8 @@ import androidx.annotation.NonNull;
 
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -30,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.foo.bolme.databinding.ActivityMainBinding;
+import com.foo.bolme.databinding.ActivitySpamBinding;
 import com.foo.bolme.databinding.CategoryItemBinding;
 
 import java.util.ArrayList;
@@ -50,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private List<Message> messagesList;
     private List<Message> messages;
-
     public HashMap<String, String> contacts = new HashMap<>();;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
         recyclerView = mainBinding.recyclerView;
+
+        buttonNames = new HashSet<>();
 
         // 연락처 및 메시지 관련 권한 부여에 관한 조건문
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -177,7 +182,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ActivitySpamBinding spamBinding = ActivitySpamBinding.inflate(getLayoutInflater());
+        mainBinding.spamUnderbar.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                openGetSpamMessage();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_CODE);
+            }
 
+        });
     }
     private String getContactNameFromPhoneNumber(String phoneNumber) {
 
@@ -265,7 +278,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, get_phonenum.class);
         startActivityForResult(intent, 1);
     }
-
+    private void openGetSpamMessage() {
+        Intent intent = new Intent(this, Spam.class);
+        startActivityForResult(intent, 1);
+    }
     //카테고리 추가 액티비티에서 작성한 폴더 이름을 extra를 통해 받아와 버튼 생성
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -304,10 +320,6 @@ public class MainActivity extends AppCompatActivity {
         CategoryItemBinding categoryItemBinding = CategoryItemBinding.inflate(getLayoutInflater());
         categoryItemBinding.categoryName.setText(name);
         categoryItemBinding.categoryView.setTag(name);
-        // 생성된 카테고리로 이동하기 위한 버튼을 메인 액티비티에 추가
-/*        Button newButton = new Button(this);
-        newButton.setText(name);
-        newButton.setTag(name);*/
 
         mainBinding.scrollLayout.addView(categoryItemBinding.categoryView);
     }
@@ -325,7 +337,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadButtonsFromPreferences() {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         buttonNames = preferences.getStringSet("ButtonNames", new HashSet<>());
-
         // 기존 버튼들을 모두 삭제
         mainBinding.scrollLayout.removeAllViews();
 
